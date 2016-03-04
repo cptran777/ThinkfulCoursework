@@ -19,7 +19,8 @@ puts "#{reverse("Hello there my name is Dan")}"
 
 #-----------------------------------------------------------------------------------------
 
-#A factorial method that takes a number and returns 1 * ... * n. This method will take an input and then recursively call itself to multiply n * n-1 until it reaches the special case factorial(0) = 1
+#A factorial method that takes a number and returns 1 * ... * n. This method will take an 
+#input and then recursively call itself to multiply n * n-1 until it reaches the special case factorial(0) = 1
 
 def factorial(num)
     if num == 0
@@ -33,7 +34,8 @@ puts "\n#{factorial(5)}"
 
 #------------------------------------------------------------------------------------------
 
-#A method that takes a string as input and returns the longest word in that string. The problem says to assume only letters and spaces but just in case, this method will also get rid of any non-letter characters in consideration of the longest word
+#A method that takes a string as input and returns the longest word in that string. The problem says to assume only 
+#letters and spaces but just in case, this method will also get rid of any non-letter characters in consideration of the longest word
 
 def longest_word(string)
     input_toArray = string.scan(/[a-zA-z]+/)
@@ -47,7 +49,8 @@ puts "\n Testing longest: #{longest_word("Hey wh34at up yall")}"
 
 #-------------------------------------------------------------------------------------------
 
-#A method that takes a number as input and return the sum of all the numbers between 0 and that number. This is done by recursively calling all numbers in reverse order from this number to 1, with the 1 being the base case.
+#A method that takes a number as input and return the sum of all the numbers between 0 and that number. This is done by 
+#recursively calling all numbers in reverse order from this number to 1, with the 1 being the base case.
 
 def sumNum(num)
     return num == 1? num : num + sumNum(num-1)
@@ -86,7 +89,8 @@ end
 puts "\n Testing Vowel Count: #{Vowel_Counter("Hello, my name is Builder Bob")}"
 
 #A shorter vowel counter function:
-#This just creates an array of all the vowels from string using the scan function and returns the length of the array, which counts the # of vowels
+#This just creates an array of all the vowels from string using the scan function and returns the 
+#length of the array, which counts the # of vowels
 def Shorter_Vowel(string)
     string.scan(/[aeiou]/).length
 end
@@ -97,8 +101,13 @@ puts "\n Testing Short Vowel Counter: #{Shorter_Vowel("Hello, my name is Builder
 
 #------------------------------------------------------------------------------------------------
 
-#A method to determine whether a given string is a palindrome. Original problem says only lower case letters will be given and no space, but that's boring so this method will actually consider any sentence/string by taking it in and removing spaces from consideration and also making every letter lowercase.
-#For this method, the string's length will be analyzed to see whether there is a central rotation character for the palindrome. Ex: abcdedcba needs to take e out of consideration and compare the letters after and before it. We will create two new strings of the halves where one side is reversed and compare whether the two strings are the same. 
+#A method to determine whether a given string is a palindrome. 
+#Original problem says only lower case letters will be given and no 
+#space, but that's boring so this method will actually consider any 
+#sentence/string by taking it in and removing spaces from consideration and also making every letter lowercase.
+#For this method, the string's length will be analyzed to see whether there is a central 
+#rotation character for the palindrome. Ex: abcdedcba needs to take e out of consideration and compare the letters 
+#after and before it. We will create two new strings of the halves where one side is reversed and compare whether the two strings are the same. 
 def Palindrome?(string)
     new_input = string.scan(/[a-zA-Z]/).join
     input_length = new_input.length
@@ -117,4 +126,84 @@ puts "\n#{Palindrome?("Helleh elleh")}"
 #-------------------------------------------------------------------------------------------------
 
 #A method that returns true/false for whether or not a letter z appears within 3 spaces after each a. 
-#
+#This method iterates through the string and for every "a" will search the next 3 spaces for a "z"
+#A flag is used, default to false and set to true if a "z" is found
+
+def nearby_az(string)
+	#Use of flags is often discouraged, but in this situation seems to be the
+	#simplest way to express the state of the existence of z after a in the string
+	flag = false
+	string.downcase!
+	for x in 0...string.length do
+		if string[x] == "a"
+			flag = false
+			for y in x+1..x+3 do
+				if string[y] == "z"
+					flag = true
+				end
+			end
+		end
+	end
+	return flag
+end
+
+print "\n Testing nearby_az w/ input Whatz up dawg!: #{nearby_az("Whatz up dawg!")}\n"
+
+print "\n Testing_nearby_az w/ input Whatz up: #{nearby_az("Whatz up")}\n"
+
+
+#--------------------------------------------------------------------------------------------------
+
+#A method that takes an array of numbers and returns the indexes of 2 numbers that sum to 0.
+#If no two numbers sum to 0, the method returns nil
+#The indexes of the two numbers are returned as an array
+#The method will loop through the array once, creating a hash table to compare the elements in the array
+#to the differences between the desired sum (0) and each element. If the difference exists
+#in the hash table, the two numbers do add to the desired sum, and at this point the method will take
+#the index of those numbers and push them into a result array
+
+def two_sum(input_array, sum)
+	#Store result and hash table, initialized as empty arrays
+	result = []
+	hash = []
+	input_array.each do |x|
+		#Using the include function, check if the sum - x exists in the hash
+		if hash.include?(sum - x)
+			result.push(hash.index(sum-x))
+			result.push(x)
+		else
+			hash.push(x)
+		end
+	end
+	return result.empty? ? nil : result
+end
+
+#Testing cases:
+
+print "Testing two_sum with [1, 2, -3, 3] #{two_sum([1,2,-3,3], 0)}\n"
+print "Testing two_sum with [1,2,3,4] (should return nil) => #{two_sum([1,2,3,4], 0)}\n"
+
+
+#---------------------------------------------------------------------------------------------------
+
+#Method that takes a number and returns true or false based on whether it is a power of 2
+#To reduce runtime, the algorithm uses 4 as a base (as it is a power of 2 and every power of 4
+#is also a power of 2) and will iterate through powers of 4 until it reaches or exceeds the current
+#number. At this point, if it equals the current number return true, otherwise, test if 
+#the point/2 equals num. 
+
+def is_power_of_2?(num)
+	x = 4
+	until x >= num
+		x *= 4
+	end
+	return x == num ? true : x/2 == num ? true : false
+end
+
+#Testing cases:
+
+print "Testing power_of_2 for 64: #{is_power_of_2?(64)}\n"
+print "Testing power_of_2 for 48: #{is_power_of_2?(48)}\n"
+
+#---------------------------------------------------------------------------------------------
+
